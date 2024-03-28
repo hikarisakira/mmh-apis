@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "production": [
+      "default"
+    ],
+    "sharedGlobals": [
+      "{workspaceRoot}/go.work"
+    ]
+  },
+  "nxCloudAccessToken": "ZDMwNzI0ZTktNjFiYS00MzY4LThhYjAtMGFhNGI1M2FjNDZmfHJlYWQtd3JpdGU=",
+  "plugins": [
+    "@nx-go/nx-go"
+  ]
+}

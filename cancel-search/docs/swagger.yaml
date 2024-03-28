@@ -1,0 +1,29 @@
+host: 10.8.41.142:8080
+info:
+  contact:
+    email: hsakira.k861@mmh.org.tw
+    name: 李承洋/K861
+  description: 健檢中心表單API，目前僅使用於勞工體檢並已保留未來擴展可能。本機網域位置位於:10.8.41.142，使用時請使用時請將localhost部分改為前述網域位置。
+  license:
+    name: Private/馬偕紀念醫院 員工保密協定
+  title: testApi
+  version: 24.02b7f3
+paths:
+  /search/del/{pno}:
+    get:
+      description: 輸入病歷號碼來獲取取消掛號紀錄
+      parameters:
+      - description: 病歷號碼
+        in: query
+        name: pno
+        required: true
+        type: string
+      produces:
+      - application/x-www-form-urlencoded
+      responses: {}
+      summary: GetDelRecord
+      tags:
+      - Search PatientService
+schemes:
+- http
+swagger: "2.0"
