@@ -13,8 +13,8 @@ import (
 	_ "git.hcmmh.linux/k861/mmh-apis/cancel-search/docs"
 )
 
-//	@title			testApi
-//	@version		24.02b7f3
+//	@title			cancel-search
+//	@version		24.03r2
 //	@description	刪除預約掛號查詢表格
 //	@contact.name	李承洋/K861
 //	@contact.email	hsakira.k861@mmh.org.tw

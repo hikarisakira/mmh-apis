@@ -4,8 +4,8 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "健檢中心表單API，目前僅使用於勞工體檢並已保留未來擴展可能。本機網域位置位於:10.8.41.142，使用時請使用時請將localhost部分改為前述網域位置。",
-        "title": "testApi",
+        "description": "刪除預約掛號查詢表格",
+        "title": "cancel-search",
         "contact": {
             "name": "李承洋/K861",
             "email": "hsakira.k861@mmh.org.tw"
@@ -13,7 +13,7 @@
         "license": {
             "name": "Private/馬偕紀念醫院 員工保密協定"
         },
-        "version": "24.02b7f3"
+        "version": "24.03r2"
     },
     "host": "10.8.41.142:8080",
     "paths": {

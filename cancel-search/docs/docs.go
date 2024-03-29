@@ -48,12 +48,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "24.02b7f3",
+	Version:          "24.03r2",
 	Host:             "10.8.41.142:8080",
 	BasePath:         "",
 	Schemes:          []string{"http"},
-	Title:            "testApi",
-	Description:      "健檢中心表單API，目前僅使用於勞工體檢並已保留未來擴展可能。本機網域位置位於:10.8.41.142，使用時請使用時請將localhost部分改為前述網域位置。",
+	Title:            "cancel-search",
+	Description:      "刪除預約掛號查詢表格",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
