@@ -3,6 +3,7 @@ package routers
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"xorm.io/xorm/names"
 
@@ -55,6 +56,9 @@ func (w *WebService) routing(db *xorm.Engine) {
 	userController := controllers.UserController{DB: db}
 
 	r := gin.Default()
+	r.LoadHTMLGlob("dist/*.html")
+	r.Static("/assets", "./dist/assets")
+	r.GET("/", HttpWeb)
 
 	r.Use(func(ctx *gin.Context) {
 		ctx.Writer.Header().Set("Access-Control-Allow-Origin", ctx.Request.Header.Get("Origin"))
@@ -80,4 +84,10 @@ func (w *WebService) routing(db *xorm.Engine) {
 	if err != nil {
 		log.Printf("fail to start")
 	}
+}
+func HttpWeb(c *gin.Context) {
+	data := new(IndexData)
+	data.title = "取消掛號查詢網頁"
+	data.context = "新竹馬偕紀念醫院/取消掛號查詢網頁"
+	c.HTML(http.StatusOK, "index.html", data)
 }

@@ -19,7 +19,6 @@
 
 # Go workspace file
 go.work
-dist
 node_modules
 .vscode/*
 .idea/*
