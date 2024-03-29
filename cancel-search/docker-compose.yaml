@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   cancel-search:
-    image: 10.8.44.151:5000/cancel-search:24.03r1
+    image: 10.8.44.151:5000/cancel-search:release
     container_name: cancel-search
     ports:
       - "8080:8080"
