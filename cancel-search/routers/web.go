@@ -58,6 +58,7 @@ func (w *WebService) routing(db *xorm.Engine) {
 	r := gin.Default()
 	r.LoadHTMLGlob("dist/*.html")
 	r.Static("/assets", "./dist/assets")
+	r.Static("/", "./dist")
 	r.GET("/", HttpWeb)
 
 	r.Use(func(ctx *gin.Context) {
