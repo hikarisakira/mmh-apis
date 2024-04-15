@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   cancel-search:
     image: 10.8.44.151:5000/cancel-search:release
@@ -8,4 +6,10 @@ services:
       - "8080:8080"
     env_file:
       - .env
-
+  cancel-search-cc:
+    image: 10.8.44.151:5000/cancel-search-cc:release
+    container_name: cancel-search-cc
+    ports:
+      - "8079:8079"
+    env_file:
+      - ../cancel-search-cc/.env

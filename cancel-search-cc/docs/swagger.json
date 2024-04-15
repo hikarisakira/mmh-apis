@@ -4,8 +4,8 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "刪除預約掛號查詢表格",
-        "title": "cancel-search",
+        "description": "刪除預約掛號查詢表格(竹兒)",
+        "title": "cancel-search-cc",
         "contact": {
             "name": "李承洋/K861",
             "email": "hsakira.k861@mmh.org.tw"
@@ -15,7 +15,7 @@
         },
         "version": "24.04r1"
     },
-    "host": "10.8.41.142:8080",
+    "host": "10.8.41.142:8079",
     "paths": {
         "/search/del/{pno}": {
             "get": {

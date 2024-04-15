@@ -3,12 +3,11 @@ package routers
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"xorm.io/xorm/names"
 
-	"git.hcmmh.linux/k861/mmh-apis/cancel-search/controllers"
+	"git.hcmmh.linux/k861/mmh-apis/cancel-search-cc/controllers"
 	"github.com/gin-gonic/gin"
 	_ "github.com/godror/godror"
 	"xorm.io/xorm"
@@ -24,14 +23,14 @@ type IndexData struct {
 }
 
 func (w *WebService) Run() {
-	var dsnHC string
+	var dsnCC string
 
-	dsnHC = os.Getenv("ORA_CONNECT_HC")
-	log.Println("Now connecting to HC database.")
+	dsnCC = os.Getenv("ORA_CONNECT_CC")
+	log.Println("Now connecting to CC database.")
 
-	engineHC, err := xorm.NewEngine("godror", dsnHC)
+	engineHC, err := xorm.NewEngine("godror", dsnCC)
 	if err != nil {
-		log.Println("Connecting to HC database failed:", err)
+		log.Println("Connecting to CC database failed:", err)
 		return
 	}
 	//日志打印SQL
@@ -51,11 +50,6 @@ func (w *WebService) routing(db *xorm.Engine) {
 	userController := controllers.UserController{DB: db}
 
 	r := gin.Default()
-	r.LoadHTMLGlob("dist/*.html")
-	r.Static("/assets", "./dist/assets")
-	r.StaticFile("/favicon.png", "./dist/favicon.png")
-	r.StaticFile("/logo.png", "./dist/logo.png")
-	r.GET("/", HttpWeb)
 
 	r.Use(func(ctx *gin.Context) {
 		ctx.Writer.Header().Set("Access-Control-Allow-Origin", ctx.Request.Header.Get("Origin"))
@@ -73,19 +67,12 @@ func (w *WebService) routing(db *xorm.Engine) {
 	v1.GET("/del/:pno", userController.GetDelRecord)
 
 	if mode := gin.Mode(); mode == gin.DebugMode {
-		url := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", 8080))
+		url := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", 8079))
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	}
 
-	err := r.Run(":8080")
+	err := r.Run(":8079")
 	if err != nil {
 		log.Printf("HC database failed to start: %v", err)
 	}
-}
-
-func HttpWeb(c *gin.Context) {
-	data := new(IndexData)
-	data.title = "取消掛號查詢網頁"
-	data.context = "新竹馬偕紀念醫院/取消掛號查詢網頁"
-	c.HTML(http.StatusOK, "index.html", data)
 }
