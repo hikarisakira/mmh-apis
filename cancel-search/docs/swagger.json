@@ -13,7 +13,7 @@
         "license": {
             "name": "Private/馬偕紀念醫院 員工保密協定"
         },
-        "version": "24.04r1"
+        "version": "24.04r2"
     },
     "host": "10.8.41.142:8080",
     "paths": {

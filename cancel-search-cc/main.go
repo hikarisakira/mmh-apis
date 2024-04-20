@@ -15,7 +15,7 @@ import (
 )
 
 //	@title			cancel-search-cc
-//	@version		24.04r1
+//	@version		24.04r2
 //	@description	刪除預約掛號查詢表格(竹兒)
 //	@contact.name	李承洋/K861
 //	@contact.email	hsakira.k861@mmh.org.tw

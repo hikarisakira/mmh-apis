@@ -54,7 +54,8 @@ func (w *WebService) routing(db *xorm.Engine) {
 	r.LoadHTMLGlob("dist/*.html")
 	r.Static("/assets", "./dist/assets")
 	r.StaticFile("/favicon.png", "./dist/favicon.png")
-	r.StaticFile("/logo.png", "./dist/logo.png")
+	r.StaticFile("/logo_hc.png", "./dist/logo_hc.png")
+	r.StaticFile("/logo_cc.png", "./dist/logo_cc.png")
 	r.GET("/", HttpWeb)
 
 	r.Use(func(ctx *gin.Context) {
@@ -71,6 +72,7 @@ func (w *WebService) routing(db *xorm.Engine) {
 
 	v1 := r.Group("/search")
 	v1.GET("/del/:pno", userController.GetDelRecord)
+	v1.GET("/id/:idno", userController.GetPatientInfo)
 
 	if mode := gin.Mode(); mode == gin.DebugMode {
 		url := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", 8080))
