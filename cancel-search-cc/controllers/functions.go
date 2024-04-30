@@ -82,14 +82,14 @@ func (uc *UserController) GetPatientInfoViaIdno(c *gin.Context) {
 
 // @Summary		GetPatientInfoViaPno
 // @Description	輸入病歷號碼，取得病歷號、姓名、性別、生日、身分證字號
-// @Tags			Search
+// @Tags			Search	Information
 // @Produce		x-www-form-urlencoded
-// @Param			idno	query	string	true  "病歷號碼"
-// @Router			/search/id/{idno} [get]
+// @Param			pno		query	string	true  "病歷號碼"
+// @Router			/search/pno/{pno} [get]
 func (uc *UserController) GetPatientInfoViaPno(c *gin.Context) {
-	idno := c.DefaultQuery("idno", `88001555`)
+	pno := c.DefaultQuery("pno", `88001555`)
 	sql := "select pno, name, sex, BIRTH, idno from idp where pno=?"
-	result, err := uc.DB.QueryString(sql, idno)
+	result, err := uc.DB.QueryString(sql, pno)
 	if err != nil {
 		c.JSON(404, gin.H{
 			"code": 404,
