@@ -45,16 +45,50 @@ func (uc *UserController) GetDelRecord(c *gin.Context) {
 
 }
 
-// @Summary		GetPatientInfo
+// @Summary		GetPatientInfoViaIdno
 // @Description	輸入身分證字號，取得病歷號、姓名、性別、生日、身分證字號
 // @Tags			Search
 // @Produce		x-www-form-urlencoded
 // @Param			idno	query	string	true  "身分證字號"
 // @Router			/search/id/{idno} [get]
 
-func (uc *UserController) GetPatientInfo(c *gin.Context) {
+func (uc *UserController) GetPatientInfoViaIdno(c *gin.Context) {
 	idno := c.DefaultQuery("idno", `O123456789`)
 	sql := "select pno, name, sex, BIRTH, idno from idp where idno=?"
+	result, err := uc.DB.QueryString(sql, idno)
+	if err != nil {
+		c.JSON(404, gin.H{
+			"code": 404,
+			"msg":  "獲取錯誤",
+			"log":  err,
+		})
+
+		return
+	}
+	if result == nil {
+		c.JSON(404, gin.H{
+			"code": 404,
+			"msg":  "沒有獲取到資料或找不到該病患",
+			"log":  err,
+		})
+		return
+	}
+	c.JSON(200, gin.H{
+		"code":   200,
+		"status": "紀錄已獲取",
+		"msg":    result,
+	})
+}
+
+// @Summary		GetPatientInfoViaPno
+// @Description	輸入病歷號碼，取得病歷號、姓名、性別、生日、身分證字號
+// @Tags			Search
+// @Produce		x-www-form-urlencoded
+// @Param			idno	query	string	true  "病歷號碼"
+// @Router			/search/id/{idno} [get]
+func (uc *UserController) GetPatientInfoViaPno(c *gin.Context) {
+	idno := c.DefaultQuery("idno", `88001555`)
+	sql := "select pno, name, sex, BIRTH, idno from idp where pno=?"
 	result, err := uc.DB.QueryString(sql, idno)
 	if err != nil {
 		c.JSON(404, gin.H{

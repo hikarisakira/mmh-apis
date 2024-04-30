@@ -1,4 +1,4 @@
-FROM golang:1.21-bookworm
+FROM golang:1.22-bookworm
 
 RUN rm /etc/localtime && \
     ln -s /usr/share/zoneinfo/Asia/Taipei /etc/localtime

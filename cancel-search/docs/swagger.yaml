@@ -24,6 +24,21 @@ paths:
       summary: GetDelRecord
       tags:
       - Search PatientService
+  /search/pno/{pno}:
+    get:
+      description: 輸入病歷號碼，取得病歷號、姓名、性別、生日、身分證字號
+      parameters:
+      - description: 病歷號碼
+        in: query
+        name: pno
+        required: true
+        type: string
+      produces:
+      - application/x-www-form-urlencoded
+      responses: {}
+      summary: GetPatientInfoViaPno
+      tags:
+      - "Search\tInformation"
 schemes:
 - http
 swagger: "2.0"

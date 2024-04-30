@@ -23,3 +23,8 @@ node_modules
 .vscode/*
 .idea/*
 .nx/*
+
+# environment
+.env
+cancel-search/.env
+cancel-search-cc/.env

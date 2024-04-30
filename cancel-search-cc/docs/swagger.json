@@ -13,7 +13,7 @@
         "license": {
             "name": "Private/馬偕紀念醫院 員工保密協定"
         },
-        "version": "24.04r1"
+        "version": "24.04r2"
     },
     "host": "10.8.41.142:8079",
     "paths": {
@@ -32,6 +32,28 @@
                         "type": "string",
                         "description": "病歷號碼",
                         "name": "pno",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/search/id/{idno}": {
+            "get": {
+                "description": "輸入病歷號碼，取得病歷號、姓名、性別、生日、身分證字號",
+                "produces": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "GetPatientInfoViaPno",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "病歷號碼",
+                        "name": "idno",
                         "in": "query",
                         "required": true
                     }

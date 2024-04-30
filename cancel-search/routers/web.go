@@ -72,7 +72,8 @@ func (w *WebService) routing(db *xorm.Engine) {
 
 	v1 := r.Group("/search")
 	v1.GET("/del/:pno", userController.GetDelRecord)
-	v1.GET("/id/:idno", userController.GetPatientInfo)
+	v1.GET("/id/:idno", userController.GetPatientInfoViaIdno)
+	v1.GET("/pno/:pno", userController.GetPatientInfoViaPno)
 
 	if mode := gin.Mode(); mode == gin.DebugMode {
 		url := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", 8080))

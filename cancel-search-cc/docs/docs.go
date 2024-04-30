@@ -42,13 +42,35 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/search/id/{idno}": {
+            "get": {
+                "description": "輸入病歷號碼，取得病歷號、姓名、性別、生日、身分證字號",
+                "produces": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "GetPatientInfoViaPno",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "病歷號碼",
+                        "name": "idno",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
         }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "24.04r1",
+	Version:          "24.04r2",
 	Host:             "10.8.41.142:8079",
 	BasePath:         "",
 	Schemes:          []string{"http"},

@@ -42,6 +42,28 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/search/pno/{pno}": {
+            "get": {
+                "description": "輸入病歷號碼，取得病歷號、姓名、性別、生日、身分證字號",
+                "produces": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "tags": [
+                    "Search\tInformation"
+                ],
+                "summary": "GetPatientInfoViaPno",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "病歷號碼",
+                        "name": "pno",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
         }
     }
 }`
