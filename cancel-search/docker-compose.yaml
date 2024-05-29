@@ -14,7 +14,7 @@ services:
     env_file:
       - ../cancel-search-cc/.env
   mmh-psn-api:
-    image: 10.8.44.151:5000/mmh-psn-api:release
+    image: 10.8.44.151:5000/mmh-psn-api:beta
     container_name: mmh-psn-api
     ports:
       - "5000:5000"
