@@ -23,7 +23,7 @@ dsn_tns = oracledb.makedsn(db_host, db_port, service_name=db_service_name)
 
 # 創建 Flask 應用
 app = Flask(__name__)
-# oracledb.init_oracle_client()
+oracledb.init_oracle_client()
 # 設置日誌記錄
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

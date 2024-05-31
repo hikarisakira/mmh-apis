@@ -24,7 +24,7 @@ RUN apt update -y && \
     apt clean && \
     apt clean --dry-run
 
-ENV ORACLE_HOME="${PATH}:/usr/lib/instantclient"
+ENV LD_LIBRARY_PATH="${PATH}:/usr/lib/instantclient"
 
 RUN python -m pip install oracledb --upgrade --user
 
