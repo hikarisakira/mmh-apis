@@ -24,6 +24,10 @@ RUN apt update -y && \
     apt clean && \
     apt clean --dry-run
 
+ENV ORACLE_HOME="${PATH}:/usr/lib/instantclient"
+
+RUN python -m pip install oracledb --upgrade --user
+
 RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt

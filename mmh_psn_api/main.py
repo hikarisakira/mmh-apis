@@ -1,4 +1,4 @@
-import cx_Oracle
+import oracledb
 import os
 import logging
 from dotenv import load_dotenv
@@ -19,20 +19,20 @@ if not all([db_host, db_port, db_service_name, db_user, db_password]):
     raise ValueError("One or more environment variables are not set.")
 
 # 創建 DSN 字符串
-dsn_tns = cx_Oracle.makedsn(db_host, db_port, service_name=db_service_name)
+dsn_tns = oracledb.makedsn(db_host, db_port, service_name=db_service_name)
 
 # 創建 Flask 應用
 app = Flask(__name__)
-
+# oracledb.init_oracle_client()
 # 設置日誌記錄
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def get_db_connection():
     try:
-        connection = cx_Oracle.connect(user=db_user, password=db_password, dsn=dsn_tns)
+        connection = oracledb.connect(user=db_user, password=db_password, dsn=dsn_tns)
         return connection
-    except cx_Oracle.DatabaseError as e:
+    except oracledb.DatabaseError as e:
         logger.error(f"Failed to connect to the database: {str(e)}")
         raise ValueError("Failed to connect to the database.")
 
@@ -51,7 +51,7 @@ def query_psn_table(hospid, empno):
         
         return result
     
-    except cx_Oracle.DatabaseError as e:
+    except oracledb.DatabaseError as e:
         logger.error(f"Database error occurred: {str(e)}")
         raise ValueError("An error occurred while querying the database.")
     

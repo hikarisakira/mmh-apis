@@ -1,5 +1,5 @@
 line-bot-sdk
 flask
-cx_Oracle
+oracledb
 gunicorn
 python-dotenv
