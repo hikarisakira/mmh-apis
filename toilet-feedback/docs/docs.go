@@ -64,7 +64,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "an_Code": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "an_Cout1": {
                     "type": "string"
