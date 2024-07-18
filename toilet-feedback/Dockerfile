@@ -1,5 +1,4 @@
-FROM python:3.12-bookworm
-WORKDIR /
+FROM golang:1.22-bookworm
 
 RUN rm /etc/localtime && \
     ln -s /usr/share/zoneinfo/Asia/Taipei /etc/localtime
@@ -24,14 +23,15 @@ RUN apt update -y && \
     apt clean && \
     apt clean --dry-run
 
-ENV LD_LIBRARY_PATH="${PATH}:/usr/lib/instantclient"
 
-RUN python -m pip install oracledb --upgrade --user
+ENV LD_LIBRARY_PATH=/usr/lib/instantclient
 
-RUN pip install --upgrade pip
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN go env -w CGO_ENABLED='1' && \
+    go env -w CC='gcc' &&\
+    go env -w CXX='g++'
+
+WORKDIR /toilet-feedback
 COPY . .
-
-CMD ["python", "main.py"]
-
+RUN go build -o ./out/start .
+EXPOSE 8081
+CMD ["./out/start"]

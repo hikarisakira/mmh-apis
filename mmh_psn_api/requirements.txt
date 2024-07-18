@@ -1,5 +1,0 @@
-line-bot-sdk
-flask
-oracledb
-gunicorn
-python-dotenv

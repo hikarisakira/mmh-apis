@@ -5,18 +5,18 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - .env
+      - cancel-search/.env
   cancel-search-cc:
     image: 10.8.44.151:5000/cancel-search-cc:release
     container_name: cancel-search-cc
     ports:
       - "8079:8079"
     env_file:
-      - ../cancel-search-cc/.env
-  mmh-psn-api:
-    image: 10.8.44.151:5000/mmh-psn-api:beta
-    container_name: mmh-psn-api
+      - cancel-search-cc/.env
+  toilet-feedback:
+    image: 10.8.44.151:5000/toilet-feedback:beta
+    container_name: toilet-feedback
     ports:
-      - "5000:5000"
+      - "6000:6000"
     env_file:
-      - ../mmh_psn_api/.env
+      - toilet-feedback/.env
