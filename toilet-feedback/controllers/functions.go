@@ -25,9 +25,7 @@ func (uc *UserController) MannouInsert(c *gin.Context) {
 		return
 	}
 	for _, item := range data {
-		_, err := uc.DB.Exec(`
-    INSERT INTO MANNOU (An_Code, An_Name, An_Cout1, An_Cout2, An_Cout3, An_Cout4, An_Cout5, An_Cout6)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, item.An_Code, item.An_Name, item.An_Cout1, item.An_Cout2, item.An_Cout3, item.An_Cout4, item.An_Cout5, item.An_Cout6)
+		_, err := uc.DB.Exec("INSERT INTO MANNOU (An_Code, An_Name, An_Cout1, An_Cout2, An_Cout3, An_Cout4, An_Cout5, An_Cout6) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", item.An_Code, item.An_Name, item.An_Cout1, item.An_Cout2, item.An_Cout3, item.An_Cout4, item.An_Cout5, item.An_Cout6)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return

@@ -70,7 +70,7 @@ func (w *WebService) routing(db *xorm.Engine) {
 	})
 
 	v1 := r.Group("/ins")
-	v1.GET("/ins", userController.MannouInsert)
+	v1.POST("/ins", userController.MannouInsert)
 
 	if mode := gin.Mode(); mode == gin.DebugMode {
 		url := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", 6000))
