@@ -2,26 +2,20 @@ package routers
 
 import (
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-
-	"xorm.io/xorm/names"
-
 	"git.hcmmh.linux/k861/mmh-apis/toilet-feedback/controllers"
 	"github.com/gin-gonic/gin"
 	_ "github.com/godror/godror"
+	"log"
+	"net/http"
+	"os"
 	"xorm.io/xorm"
+	"xorm.io/xorm/names"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type WebService struct{}
-type IndexData struct {
-	title   string
-	context string
-}
 
 func (w *WebService) Run() {
 	var dsnHC string
@@ -47,16 +41,33 @@ func (w *WebService) Run() {
 }
 
 func (w *WebService) routing(db *xorm.Engine) {
-
 	userController := controllers.UserController{DB: db}
 
 	r := gin.Default()
-	r.LoadHTMLGlob("dist/*.html")
+
+	// 设置静态文件服务
 	r.Static("/assets", "./dist/assets")
 	r.StaticFile("/favicon.png", "./dist/favicon.png")
 	r.StaticFile("/logo_hc.png", "./dist/logo_hc.png")
 	r.StaticFile("/logo_cc.png", "./dist/logo_cc.png")
-	r.GET("/", HttpWeb)
+
+	// 处理根路径和带有地点代号的路径
+	r.GET("/*path", func(c *gin.Context) {
+		path := c.Param("path")
+		if path == "/" || path == "" {
+			// 根路径，返回 index.html
+			c.File("./dist/index.html")
+		} else {
+			// 检查是否为有效的地点代号（这里您需要实现自己的验证逻辑）
+			if isValidLocationCode(path[1:]) {
+				// 有效的地点代号，返回 index.html
+				c.File("./dist/index.html")
+			} else {
+				// 无效的路径，返回 404
+				c.String(http.StatusNotFound, "404 page not found")
+			}
+		}
+	})
 
 	r.Use(func(ctx *gin.Context) {
 		ctx.Writer.Header().Set("Access-Control-Allow-Origin", ctx.Request.Header.Get("Origin"))
@@ -84,9 +95,15 @@ func (w *WebService) routing(db *xorm.Engine) {
 	}
 }
 
-func HttpWeb(c *gin.Context) {
-	data := new(IndexData)
-	data.title = "公共區域通報系統"
-	data.context = "新竹馬偕紀念醫院/公共區域通報系統"
-	c.HTML(http.StatusOK, "index.html", data)
+// isValidLocationCode 函数用于验证地点代号是否有效
+func isValidLocationCode(code string) bool {
+	// 这里您需要实现自己的验证逻辑
+	// 例如，检查代号是否在预定义的列表中，或者查询数据库
+	// 这里只是一个示例实现
+	validCodes := map[string]bool{
+		"P3F301M": true,
+		"F5F503F": true,
+		"TESTING": true,
+	}
+	return validCodes[code]
 }
