@@ -27,7 +27,7 @@ definitions:
     - an_Cout6
     - an_Name
     type: object
-host: 10.8.41.142:6000
+host: 10.8.41.142:6003
 info:
   contact:
     email: hsakira.k861@mmh.org.tw

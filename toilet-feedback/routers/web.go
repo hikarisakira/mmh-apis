@@ -74,11 +74,11 @@ func (w *WebService) routing(db *xorm.Engine) {
 	v1.POST("/ins", userController.MannouInsert)
 
 	if mode := gin.Mode(); mode == gin.DebugMode {
-		url := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", 6000))
+		url := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", 6003))
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	}
 
-	err := r.Run(":6000")
+	err := r.Run(":6003")
 	if err != nil {
 		log.Printf("HC database failed to start: %v", err)
 	}
