@@ -2,12 +2,13 @@ package routers
 
 import (
 	"fmt"
-	"git.hcmmh.linux/k861/mmh-apis/toilet-feedback/controllers"
-	"github.com/gin-gonic/gin"
-	_ "github.com/godror/godror"
 	"log"
 	"net/http"
 	"os"
+
+	"git.hcmmh.linux/k861/mmh-apis/toilet-feedback/controllers"
+	"github.com/gin-gonic/gin"
+	_ "github.com/godror/godror"
 	"xorm.io/xorm"
 	"xorm.io/xorm/names"
 
@@ -45,30 +46,7 @@ func (w *WebService) routing(db *xorm.Engine) {
 
 	r := gin.Default()
 
-	// 设置静态文件服务
-	r.Static("/assets", "./dist/assets")
-	r.StaticFile("/favicon.png", "./dist/favicon.png")
-	r.StaticFile("/logo_hc.png", "./dist/logo_hc.png")
-	r.StaticFile("/logo_cc.png", "./dist/logo_cc.png")
-
-	// 处理根路径和带有地点代号的路径
-	r.GET("/*path", func(c *gin.Context) {
-		path := c.Param("path")
-		if path == "/" || path == "" {
-			// 根路径，返回 index.html
-			c.File("./dist/index.html")
-		} else {
-			// 检查是否为有效的地点代号（这里您需要实现自己的验证逻辑）
-			if isValidLocationCode(path[1:]) {
-				// 有效的地点代号，返回 index.html
-				c.File("./dist/index.html")
-			} else {
-				// 无效的路径，返回 404
-				c.String(http.StatusNotFound, "404 page not found")
-			}
-		}
-	})
-
+	// CORS middleware
 	r.Use(func(ctx *gin.Context) {
 		ctx.Writer.Header().Set("Access-Control-Allow-Origin", ctx.Request.Header.Get("Origin"))
 		ctx.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -81,13 +59,33 @@ func (w *WebService) routing(db *xorm.Engine) {
 		ctx.Next()
 	})
 
+	// 設置靜態文件路由
+	r.Static("/assets", "./dist/assets")
+	r.StaticFile("/favicon.png", "./dist/favicon.png")
+	r.StaticFile("/logo_hc.png", "./dist/logo_hc.png")
+	r.StaticFile("/logo_cc.png", "./dist/logo_cc.png")
+
+	// API 路由
 	v1 := r.Group("/ins")
 	v1.POST("/ins", userController.MannouInsert)
 
+	// Swagger 路由
 	if mode := gin.Mode(); mode == gin.DebugMode {
 		url := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", 6003))
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	}
+
+	// 處理所有其他路徑
+	r.NoRoute(func(c *gin.Context) {
+		path := c.Request.URL.Path
+		if path == "/" || isValidLocationCode(path[1:]) {
+			// 根路徑或有效的地點代號，返回 index.html
+			c.File("./dist/index.html")
+		} else {
+			// 其他所有路徑，重定向到根路徑
+			c.Redirect(http.StatusFound, "/")
+		}
+	})
 
 	err := r.Run(":6003")
 	if err != nil {
@@ -95,11 +93,11 @@ func (w *WebService) routing(db *xorm.Engine) {
 	}
 }
 
-// isValidLocationCode 函数用于验证地点代号是否有效
+// isValidLocationCode 函數用於驗證地點代號是否有效
 func isValidLocationCode(code string) bool {
-	// 这里您需要实现自己的验证逻辑
-	// 例如，检查代号是否在预定义的列表中，或者查询数据库
-	// 这里只是一个示例实现
+	// 這裡您需要實現自己的驗證邏輯
+	// 例如，檢查代號是否在預定義的列表中，或者查詢數據庫
+	// 這裡只是一個示例實現
 	validCodes := map[string]bool{
 		"P3F301M": true,
 		"F5F503F": true,
