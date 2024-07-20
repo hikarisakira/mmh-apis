@@ -3,6 +3,7 @@ package routers
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"xorm.io/xorm/names"
@@ -50,12 +51,12 @@ func (w *WebService) routing(db *xorm.Engine) {
 	userController := controllers.UserController{DB: db}
 
 	r := gin.Default()
-	//r.LoadHTMLGlob("dist/*.html")
-	//r.Static("/assets", "./dist/assets")
-	//r.StaticFile("/favicon.png", "./dist/favicon.png")
-	//r.StaticFile("/logo_hc.png", "./dist/logo_hc.png")
-	//r.StaticFile("/logo_cc.png", "./dist/logo_cc.png")
-	//r.GET("/", HttpWeb)
+	r.LoadHTMLGlob("dist/*.html")
+	r.Static("/assets", "./dist/assets")
+	r.StaticFile("/favicon.png", "./dist/favicon.png")
+	r.StaticFile("/logo_hc.png", "./dist/logo_hc.png")
+	r.StaticFile("/logo_cc.png", "./dist/logo_cc.png")
+	r.GET("/", HttpWeb)
 
 	r.Use(func(ctx *gin.Context) {
 		ctx.Writer.Header().Set("Access-Control-Allow-Origin", ctx.Request.Header.Get("Origin"))
@@ -83,9 +84,9 @@ func (w *WebService) routing(db *xorm.Engine) {
 	}
 }
 
-//func HttpWeb(c *gin.Context) {
-//	data := new(IndexData)
-//	data.title = "公共區域通報系統"
-//	data.context = "新竹馬偕紀念醫院/公共區域通報系統"
-//	c.HTML(http.StatusOK, "index.html", data)
-//}
+func HttpWeb(c *gin.Context) {
+	data := new(IndexData)
+	data.title = "公共區域通報系統"
+	data.context = "新竹馬偕紀念醫院/公共區域通報系統"
+	c.HTML(http.StatusOK, "index.html", data)
+}
