@@ -26,8 +26,8 @@ func (uc *UserController) MannouInsert(c *gin.Context) {
 	log.Printf("Received data: %+v", data)
 
 	// 执行数据库插入
-	_, err := uc.DB.Exec("INSERT INTO MANNOU (An_Code, An_Name, An_Cout1, An_Cout2, An_Cout3, An_Cout4, An_Cout5, An_Cout6) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-		data.An_Code, data.An_Name, data.An_Cout1, data.An_Cout2, data.An_Cout3, data.An_Cout4, data.An_Cout5, data.An_Cout6)
+	_, err := uc.DB.Exec("INSERT INTO MANNOU (PlaceCode, PlaceName, An_Cout1, An_Cout2, An_Cout3, An_Cout4, Bn_Cout1, Bn_Cout2, Bn_Cout3, Bn_Cout4, Bn_Cout5, Bn_Cout6, Bn_Cout7) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+		data.PlaceCode, data.PlaceName, data.An_Cout1, data.An_Cout2, data.An_Cout3, data.An_Cout4, data.Bn_Cout1, data.Bn_Cout2, data.Bn_Cout3, data.Bn_Cout4, data.Bn_Cout5, data.Bn_Cout6, data.Bn_Cout7)
 
 	if err != nil {
 		log.Printf("Database error: %v", err)
