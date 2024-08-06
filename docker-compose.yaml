@@ -14,7 +14,7 @@ services:
     env_file:
       - cancel-search-cc/.env
   toilet-feedback:
-    image: 10.8.44.151:5000/toilet-feedback:release
+    image: 10.8.44.151:5000/toilet-feedback:beta
     container_name: toilet-feedback
     ports:
       - "6003:6003"

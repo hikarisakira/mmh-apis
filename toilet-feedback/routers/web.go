@@ -18,6 +18,16 @@ import (
 
 type WebService struct{}
 
+var validLocationCodes map[string]bool
+
+func init() {
+	var err error
+	validLocationCodes, err = ParseLocationCodes("./index.ts")
+	if err != nil {
+		log.Fatalf("Failed to parse location codes: %v", err)
+	}
+}
+
 func (w *WebService) Run() {
 	var dsnHC string
 
@@ -95,13 +105,5 @@ func (w *WebService) routing(db *xorm.Engine) {
 
 // isValidLocationCode 函數用於驗證地點代號是否有效
 func isValidLocationCode(code string) bool {
-	// 這裡您需要實現自己的驗證邏輯
-	// 例如，檢查代號是否在預定義的列表中，或者查詢數據庫
-	// 這裡只是一個示例實現
-	validCodes := map[string]bool{
-		"P3F301M": true,
-		"F5F503F": true,
-		"TESTING": true,
-	}
-	return validCodes[code]
+	return validLocationCodes[code]
 }
