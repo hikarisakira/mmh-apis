@@ -21,9 +21,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/ins/ins": {
+        "/sms": {
             "post": {
-                "description": "輸入通報資料",
+                "description": "傳送簡訊",
                 "consumes": [
                     "application/json"
                 ],
@@ -31,17 +31,17 @@ const docTemplate = `{
                     "application/x-www-form-urlencoded"
                 ],
                 "tags": [
-                    "Insert"
+                    "Write\tSMS"
                 ],
-                "summary": "MannouInsert",
+                "summary": "SMSSend",
                 "parameters": [
                     {
-                        "description": "由上而下值為：問卷代號(請全部大寫)、項目代碼、答案、病歷號碼",
+                        "description": "電話號碼、簡訊內容",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.FeedBackFormat"
+                            "$ref": "#/definitions/models.SMSData"
                         }
                     }
                 ],
@@ -50,41 +50,31 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.FeedBackFormat": {
+        "models.SMSData": {
             "type": "object",
             "required": [
-                "an_Code",
-                "an_Cout1",
-                "an_Cout2",
-                "an_Cout3",
-                "an_Cout4",
-                "an_Cout5",
-                "an_Cout6",
-                "an_Name"
+                "message",
+                "oper",
+                "phsno",
+                "udate"
             ],
             "properties": {
-                "an_Code": {
+                "kind": {
                     "type": "string"
                 },
-                "an_Cout1": {
+                "message": {
                     "type": "string"
                 },
-                "an_Cout2": {
+                "oper": {
                     "type": "string"
                 },
-                "an_Cout3": {
+                "phsno": {
                     "type": "string"
                 },
-                "an_Cout4": {
+                "status": {
                     "type": "string"
                 },
-                "an_Cout5": {
-                    "type": "string"
-                },
-                "an_Cout6": {
-                    "type": "string"
-                },
-                "an_Name": {
+                "udate": {
                     "type": "string"
                 }
             }
@@ -94,7 +84,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "24.07b1",
+	Version:          "24.08b3",
 	Host:             "10.8.41.142:6003",
 	BasePath:         "",
 	Schemes:          []string{"http"},

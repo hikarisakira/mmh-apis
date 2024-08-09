@@ -1,31 +1,23 @@
 definitions:
-  models.FeedBackFormat:
+  models.SMSData:
     properties:
-      an_Code:
+      kind:
         type: string
-      an_Cout1:
+      message:
         type: string
-      an_Cout2:
+      oper:
         type: string
-      an_Cout3:
+      phsno:
         type: string
-      an_Cout4:
+      status:
         type: string
-      an_Cout5:
-        type: string
-      an_Cout6:
-        type: string
-      an_Name:
+      udate:
         type: string
     required:
-    - an_Code
-    - an_Cout1
-    - an_Cout2
-    - an_Cout3
-    - an_Cout4
-    - an_Cout5
-    - an_Cout6
-    - an_Name
+    - message
+    - oper
+    - phsno
+    - udate
     type: object
 host: 10.8.41.142:6003
 info:
@@ -36,26 +28,26 @@ info:
   license:
     name: Private/馬偕紀念醫院 員工保密協定
   title: toilet-feedback
-  version: 24.07b1
+  version: 24.08b3
 paths:
-  /ins/ins:
+  /sms:
     post:
       consumes:
       - application/json
-      description: 輸入通報資料
+      description: 傳送簡訊
       parameters:
-      - description: 由上而下值為：問卷代號(請全部大寫)、項目代碼、答案、病歷號碼
+      - description: 電話號碼、簡訊內容
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.FeedBackFormat'
+          $ref: '#/definitions/models.SMSData'
       produces:
       - application/x-www-form-urlencoded
       responses: {}
-      summary: MannouInsert
+      summary: SMSSend
       tags:
-      - Insert
+      - "Write\tSMS"
 schemes:
 - http
 swagger: "2.0"

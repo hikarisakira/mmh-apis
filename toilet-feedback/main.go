@@ -15,7 +15,7 @@ import (
 )
 
 //	@title			toilet-feedback
-//	@version		24.07b1
+//	@version		24.08b3
 //	@description	公共區域通報系統
 //	@contact.name	李承洋/K861
 //	@contact.email	hsakira.k861@mmh.org.tw

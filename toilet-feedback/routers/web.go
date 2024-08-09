@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"git.hcmmh.linux/k861/mmh-apis/toilet-feedback/controllers"
 	"github.com/gin-gonic/gin"
@@ -21,38 +22,70 @@ type WebService struct{}
 var validLocationCodes map[string]bool
 
 func init() {
-	var err error
-	validLocationCodes, err = ParseLocationCodes("./index.ts")
+	// 获取当前工作目录
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Failed to get current working directory: %v", err)
+	}
+
+	// 构建 index.ts 文件的完整路径
+	indexPath := filepath.Join(currentDir, "routers", "index.ts")
+
+	// 检查文件是否存在
+	if _, err := os.Stat(indexPath); os.IsNotExist(err) {
+		log.Fatalf("index.ts file does not exist at path: %s", indexPath)
+	}
+
+	validLocationCodes, err = ParseLocationCodes(indexPath)
 	if err != nil {
 		log.Fatalf("Failed to parse location codes: %v", err)
 	}
-}
 
+	log.Printf("Successfully parsed %d location codes from %s", len(validLocationCodes), indexPath)
+}
 func (w *WebService) Run() {
 	var dsnHC string
 
 	dsnHC = os.Getenv("ORA_CONNECT_HC")
 	log.Println("Now connecting to HC database.")
+	dsnSMS := os.Getenv("ORA_CONNECT_SMS")
+	log.Println("Ready to send SMS message.")
 
-	engineHC, err := xorm.NewEngine("godror", dsnHC)
+	engineHC, err := w.createDBEngine(dsnHC)
 	if err != nil {
 		log.Println("Connecting to HC database failed:", err)
 		return
 	}
-	//日志打印SQL
-	engineHC.ShowSQL(true)
-	//设置连接池的空闲数大小
-	engineHC.SetMaxIdleConns(5)
-	//设置最大打开连接数
-	engineHC.SetMaxOpenConns(15)
-	//名称映射规则主要负责结构体名称到表名和结构体field到表字段的名称映射
-	engineHC.SetTableMapper(names.SnakeMapper{})
+	engineSMS, err := w.createDBEngine(dsnSMS)
+	if err != nil {
+		log.Println("Connecting to SMS database failed:", err)
+		return
+	}
+
 	// Start service, listening on default port
-	w.routing(engineHC)
+	w.routing(engineHC, engineSMS)
 }
 
-func (w *WebService) routing(db *xorm.Engine) {
-	userController := controllers.UserController{DB: db}
+func (w *WebService) createDBEngine(dsn string) (*xorm.Engine, error) {
+
+	engine, err := xorm.NewEngine("godror", dsn)
+	if err != nil {
+		return nil, err
+	}
+	//日志打印SQL
+	engine.ShowSQL(true)
+	//设置连接池的空闲数大小
+	engine.SetMaxIdleConns(5)
+	//设置最大打开连接数
+	engine.SetMaxOpenConns(15)
+	//名称映射规则主要负责结构体名称到表名和结构体field到表字段的名称映射
+	engine.SetTableMapper(names.SnakeMapper{})
+	return engine, nil
+}
+
+func (w *WebService) routing(dbHC, dbSMS *xorm.Engine) {
+	userController := controllers.UserController{DB: dbHC}
+	userControllerSMS := controllers.UserController{DB: dbSMS}
 
 	r := gin.Default()
 
@@ -78,6 +111,7 @@ func (w *WebService) routing(db *xorm.Engine) {
 	// API 路由
 	v1 := r.Group("/ins")
 	v1.POST("/ins", userController.MannouInsert)
+	v1.POST("/sms", userControllerSMS.SMSSend)
 
 	// Swagger 路由
 	if mode := gin.Mode(); mode == gin.DebugMode {
@@ -99,7 +133,7 @@ func (w *WebService) routing(db *xorm.Engine) {
 
 	err := r.Run(":6003")
 	if err != nil {
-		log.Printf("HC database failed to start: %v", err)
+		log.Printf("Server failed to start: %v", err)
 	}
 }
 
